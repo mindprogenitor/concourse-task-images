@@ -28,7 +28,6 @@ RUN apk del \
   libc-dev \
   gcc \
   make \
-  openssl \
   tar \
   apk-tools
 
