@@ -8,20 +8,10 @@ RUN curl -skL "$(curl -s https://api.github.com/repos/pivotal-cf/om/releases/lat
 
 RUN curl -skL "$(curl -s https://api.github.com/repos/pivotal-cf/pivnet-cli/releases/latest|jq --raw-output '.assets[] | .browser_download_url' | grep linux | grep -v zip)" > /usr/bin/pivnet-cli && chmod 755 /usr/bin/pivnet-cli
 
-RUN apk --no-cache add \
-  ruby-dev \
-  make \
-  gcc \
-  libc-dev ; \
-  gem install json -N ; \
-  gem install bosh_cli -N ; \
-  apk del \
-  libc-dev \
-  gcc \
-  make \
-  ruby-dev \
-  apk-tools ; \
-  rm -fr /tmp/* ; \
-  rm -fr /var/cache/apk
+RUN curl -skL https://s3.amazonaws.com/bosh-cli-artifacts/bosh-cli-2.0.48-linux-amd64 > /usr/local/bin/bosh2 && chmod 0755 /usr/local/bin/bosh2
 
+WORKDIR /tmp
 
+RUN curl -skL "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" | tar -xz && mv cf /usr/bin/cf && rm *
+
+WORKDIR /root
